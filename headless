@@ -1,0 +1,34 @@
+#!/bin/bash
+
+CFG_FILE=$(ls /boot/headless* 2>/dev/null)
+
+if [ "$CFG_FILE" != "" ]; then
+    echo "Headless mode enabled"
+    echo "Disabling initial-setup service"
+    systemctl stop initial-setup.service
+    systemctl disable initial-setup.service
+
+    CFG_OPTS=$(grep '[0-9]' "$CFG_FILE")
+
+    if [ "$CFG_OPTS"  != "" ]; then
+            IP_ADDRESS=$(sed -n 's/IPADDR=//p' $CFG_FILE)
+            IP_NETMASK=$(sed -n 's/NETMASK=//p' $CFG_FILE)
+            IP_GATEWAY=$(sed -n 's/GATEWAY=//p' $CFG_FILE)
+
+            cat << EOF > /etc/sysconfig/network-scripts/ifcfg-eth0
+DEVICE=eth0
+IPADDR=$IP_ADDRESS
+NETMASK=$IP_NETMASK
+GATEWAY=$IP_GATEWAY
+BOOTPROTO=static
+ONBOOT=yes
+NM_CONTROLLED=yes
+EOF
+ 
+            systemctl restart NetworkManager.service
+    fi
+fi
+
+# Always disable headless-check.service after first use.
+echo "Disabling initial-setup service"
+systemctl disable headless-check.service

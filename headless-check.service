@@ -1,0 +1,11 @@
+[Unit]
+Description=Check for headless mode
+Before=initial-setup.service 
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/headless
+RemainAfterExit=no
+
+[Install]
+WantedBy=multi-user.target
