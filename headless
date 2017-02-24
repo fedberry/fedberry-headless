@@ -11,15 +11,15 @@ if [ "$CFG_FILE" != "" ]; then
     CFG_OPTS=$(grep '[0-9]' "$CFG_FILE")
 
     if [ "$CFG_OPTS"  != "" ]; then
-            IP_ADDRESS=$(sed -n 's/IPADDR=//p' $CFG_FILE)
-            IP_NETMASK=$(sed -n 's/NETMASK=//p' $CFG_FILE)
-            IP_GATEWAY=$(sed -n 's/GATEWAY=//p' $CFG_FILE)
+            IPADDR=$(sed -n 's/IPADDR=//p' $CFG_FILE)
+            NETMASK=$(sed -n 's/NETMASK=//p' $CFG_FILE)
+            GATEWAY=$(sed -n 's/GATEWAY=//p' $CFG_FILE)
 
             cat << EOF > /etc/sysconfig/network-scripts/ifcfg-eth0
 DEVICE=eth0
-IPADDR=$IP_ADDRESS
-NETMASK=$IP_NETMASK
-GATEWAY=$IP_GATEWAY
+IPADDR=$IPADDR
+NETMASK=$NETMASK
+GATEWAY=$GATEWAY
 BOOTPROTO=static
 ONBOOT=yes
 NM_CONTROLLED=yes
