@@ -17,4 +17,4 @@ NETMASK=255.255.255.0
 GATEWAY=192.168.1.1
 ```
 
-3) Unmout your SD card and use it to boot Fedberry in headless mode.
+3) Unmount your SD card and use it to boot Fedberry in headless mode.
